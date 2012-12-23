@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import User
 
 #
 # Personel/attendee level models:
@@ -6,12 +7,11 @@ from django.db import models
 
 # Guest: a user who is not a player
 class Guest(models.Model):
-   name = models.CharField(max_length=60)
+   user = models.OneToOneField(User)
 
-# Player: A player in the Event.
+# Player: A user who is a player in the Event.
 class Player(models.Model):
-   name = models.CharField(max_length=60)                #
-   email = models.EmailField()                           #
+   user = models.OneToOneField(User)
    phoneNumber = models.CharField(max_length=10)         # Optional field
    isUcsd = models.BooleanField()                        # Is the player a UCSD student?
    ucsdCollege = models.CharField(max_length=32)         # What UCSD college does the player belong to?              
@@ -56,7 +56,9 @@ class Tournament(models.Model):
    tournamentLeaders = models.ManyToManyField(TournamentLeader)      # Who are the TLs?
    tournamentAssistants = models.ManyToManyField(TournamentAssitant) # Who are the TAs?
    prizes = models.CharField(max_length=500)             # Textfield for prizes
+   bracketingMethod = models.OneToOneField(BracketingMethod)
    bracket = models.CharField(max_length=1024)           # Bracket field - contains a string describing the current state/structure of the tournament
+  
    
 # Match: single Match for the tournament (one node of the tournament) - a Match can consist of many games
 class Match(models.Model):
@@ -69,10 +71,8 @@ class Match(models.Model):
    winners = models.ManyToManyField(Team)                # Who are the winners?
    losers = models.ManyToManyField(Team)                 # Who are the losers?
    
-#
 # Games: a Match consists of any number of games
 # CAN support round robin/pool play.
-#   
 class Game(models.Model):
    match = models.ForeignKey(Match)                      # The Match the Game is associated with
    teams = models.ManyToManyField(Team)                  # Who are the teams in this game (may be more than just 2)
@@ -80,3 +80,7 @@ class Game(models.Model):
    startTime = models.TimeField()                        # When should the game start?
    winners = models.ManyToManyField(Team)                # Who were the winners?
    losers = models.ManyToManyField(Team)                 # Who were the losers?
+   
+# BracketingMethod: How a tournament will do its initial bracketing
+class BracketingMethod(models.Model):
+   name = CharField(max_length=20)
