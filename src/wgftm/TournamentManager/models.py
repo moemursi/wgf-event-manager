@@ -8,7 +8,11 @@ from django.contrib.auth.models import User
 # Guest: a user who is not a player
 class Guest(models.Model):
    user = models.OneToOneField(User)
-
+   isUcsd = models.BooleanField()
+   
+   def __unicode__(self):
+      return "User: " + self.user.username + " | Name: " + self.user.first_name + " " + self.user.last_name
+   
 # Player: A user who is a player in the Event.
 class Player(models.Model):
    user = models.OneToOneField(User)
@@ -17,6 +21,9 @@ class Player(models.Model):
    ucsdCollege = models.CharField(max_length=32)         # What UCSD college does the player belong to?              
    age = models.IntegerField()                           # To check for whether or not we need to distribute legal forms for prizes
    isBusy = models.BooleanField()                        # Is the player CURRENTLY busy - may be used for something
+
+   def __unicode__(self):
+      return "User: " + self.user.username + " | Name: " + self.user.first_name + " " + self.user.last_name
    
 # Team: Can be a single player or a collection of players, but ONLY teams are part of Games. The participants
 # in a game
@@ -56,8 +63,8 @@ class Tournament(models.Model):
    date = models.TimeField()                             # Tournament date
    curNumTeams = models.IntegerField()                   # What is the current number of teams in this tournament?
    maxNumTeams = models.IntegerField()                   # The maximum number of teams in this tournament?
-   tournamentLeaders = models.ManyToManyField(TournamentLeader)      # Who are the TLs?
-   tournamentAssistants = models.ManyToManyField(TournamentAssistant) # Who are the TAs?
+   tournamentLeaders = models.ManyToManyField(TournamentLeader)         # Who are the TLs?
+   tournamentAssistants = models.ManyToManyField(TournamentAssistant)   # Who are the TAs?
    prizes = models.CharField(max_length=500)             # Textfield for prizes
    bracketingMethod = models.OneToOneField(BracketingMethod)
    bracket = models.CharField(max_length=1024)           # Bracket field - contains a string describing the current state/structure of the tournament
@@ -70,10 +77,10 @@ class Match(models.Model):
    name = models.CharField(max_length=64)                # What is the name of this match 
    matchType = models.CharField(max_length=64)           # What kind of match is this? (i.e.: single elim, double elim, round robin, any other format)
    teams = models.ManyToManyField(Team)                  # What teams are participaiting?
-   winnerParent = models.OneToOneField('self', related_name = '+')   # Where should the winners go?
-   loserParent = models.OneToOneField('self', related_name = '+')     # Where should the losers go?
-   matchWinners = models.ManyToManyField(Team, related_name = 'matchWinners')              # Who are the winners?
-   matchLosers = models.ManyToManyField(Team, related_name = 'matchLosers')                # Who are the losers?
+   winnerParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for winners')   # Where should the winners go?
+   loserParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for losers')     # Where should the losers go?
+   matchWinners = models.ManyToManyField(Team, related_name = 'matchWinners', verbose_name = 'teams who won the match') # Who are the winners?
+   matchLosers = models.ManyToManyField(Team, related_name = 'matchLosers', verbose_name = 'teams who lost the match')  # Who are the losers?
    
 # Games: a Match consists of any number of games
 # CAN support round robin/pool play.
@@ -82,8 +89,8 @@ class Game(models.Model):
    teams = models.ManyToManyField(Team, related_name = 'teams')      # Who are the teams in this game (may be more than just 2)
    verified = models.BooleanField()                      # Has the game been verified?
    startTime = models.TimeField()                        # When should the game start?
-   gameWinners = models.ManyToManyField(Team, related_name = 'gameWinners')  # Who were the winners?
-   gameLosers = models.ManyToManyField(Team, related_name = 'gameLosers')    # Who were the losers?
+   gameWinners = models.ManyToManyField(Team, related_name = 'gameWinners', verbose_name = 'teams who won the game')  # Who were the winners?
+   gameLosers = models.ManyToManyField(Team, related_name = 'gameLosers', verbose_name = 'teams who lost the game')    # Who were the losers?
    
 
    
