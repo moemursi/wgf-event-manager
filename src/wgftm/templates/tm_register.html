@@ -1,0 +1,24 @@
+{% if form.errors %}
+   <div class="err"> The following errors were found with your submission: </div>
+   <ul>
+      {% for error in form.errors %}
+         <li>{{ error }}</li>
+      {% endfor %}
+   </ul>
+{% endif %}
+
+<h2>Winter Gamefest 2012 User Registration</h2>
+<form method ="post" action="/register/" method="post">
+   {% csrf_token %}
+   <div class="form_field">{{ form.first_name.label_tag }}: {{form.first_name}}</div>
+   <div class="form_field">{{ form.last_name.label_tag }}: {{form.last_name}}</div>
+   <div class="form_field">{{ form.age.label_tag }}: {{form.age}}</div>
+   
+   <div class="form_field">{{ form.username.label_tag }}: {{form.username}}</div>
+   <div class="form_field">{{ form.password.label_tag }}: {{form.password}}</div>
+   <div class="form_field">{{ form.email.label_tag }}: {{form.email}}</div>
+
+   <div class="form_field">{{ form.is_player.label_tag }}: {{form.is_player}}</div>
+   <div class="form_field">{{ form.is_ucsd.label_tag }}: {{form.is_ucsd}}</div>
+   <input type="submit" value="Register" />
+</form>
