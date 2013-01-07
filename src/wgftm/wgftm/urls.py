@@ -13,7 +13,12 @@ urlpatterns = patterns('',
     # url(r'^wgftm/', include('wgftm.foo.urls')),
     
     # Tournament Manager URLs
+    url(r'^login/$', 'TournamentManager.views.tm_login'),
+    url(r'^logout/$', 'TournamentManager.views.tm_logout'),
     url(r'^register/$', 'TournamentManager.views.register'),
+    url(r'^postregister/$', 'TournamentManager.views.postregister'),
+    url(r'^viewuser/$', 'TournamentManager.views.viewuser'),
+    url(r'^postlogout/$', 'TournamentManager.views.postlogout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

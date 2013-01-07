@@ -152,3 +152,6 @@ LOGGING = {
         },
     }
 }
+
+# URL to redirect to if login fails
+LOGIN_URL = '/login/'

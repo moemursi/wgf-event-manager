@@ -1,0 +1,12 @@
+{% if status == 'invalid' %}
+   <div class="err">There was an error logging you in. Please try again.</div>
+{% endif %}
+
+<h2>Winter Gamefest 2012</h2>
+<form method ="post" action="/login/" method="post">
+   {% csrf_token %}
+   <div class="form_field">{{ form.username.label_tag }}: {{form.username}}</div>
+   <div class="form_field">{{ form.password.label_tag }}: {{form.password}}</div>
+   <input type="submit" value="Login" />
+   <input type="hidden" name="next" value="{{ next }}" />
+</form>
