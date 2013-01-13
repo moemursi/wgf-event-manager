@@ -25,5 +25,5 @@
 #                 This directory is named "templates" and should be in your
 #                 "wgftm" folder where "manage.py" is located. It should
 #                 point to this location with an ABSOLUTE path.
-CUSTOM_TEMPLATES_DIR = 'C:/Users/Owner/Documents/Programming Projects/WGF Tournament Manager/git/wgf-event-manager/src/wgftm/templates'
-
+#CUSTOM_TEMPLATES_DIR = 'C:/Users/Owner/Documents/Programming Projects/WGF Tournament Manager/git/wgf-event-manager/src/wgftm/templates'
+CUSTOM_TEMPLATES_DIR = 'D:/Dropbox/UCSD/Sixth College Technology Committee/Code/wgf-event-manager/src/wgftm/templates'
