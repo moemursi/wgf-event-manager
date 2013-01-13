@@ -25,12 +25,9 @@
    {% csrf_token %}
    <div class="form_field">{{ form.first_name.label_tag }}: {{form.first_name}}</div>
    <div class="form_field">{{ form.last_name.label_tag }}: {{form.last_name}}</div>
-   <div class="form_field">{{ form.age.label_tag }}: {{form.age}}</div>
-   
    <div class="form_field">{{ form.username.label_tag }}: {{form.username}}</div>
    <div class="form_field">{{ form.password.label_tag }}: {{form.password}}</div>
    <div class="form_field">{{ form.email.label_tag }}: {{form.email}}</div>
-
    <div class="form_field">{{ form.is_player.label_tag }}: <!--{{form.is_player}}-->
       <input type="checkbox" id="is_player" disabled=true />
       {% if is_player %}
