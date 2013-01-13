@@ -1,0 +1,13 @@
+{% if inTourneys %}
+   <h2>Currently registered in:</h2>
+   {% for t in inTourneys %}
+      <a href='/tourneydetail/{{ t.id }}'>{{ t.name }}</a> <br />
+   {% endfor %}
+{% endif %}
+
+{% if notInTourneys %}
+   <h2>Can register in:</h2>
+   {% for t in notInTourneys %}
+      <a href='/tourneydetail/{{ t.id }}'>{{ t.name }}</a> <br />
+   {% endfor %}
+{% endif %} 

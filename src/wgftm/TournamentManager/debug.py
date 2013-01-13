@@ -11,6 +11,10 @@ from django.utils import timezone
 # Generates dummy objects for every model in the app
 # 
 class dummyGenerator:
+   #
+   # Creates a dummy object in the database for every model we currently have
+   # Update deleteDummies whenever this is modified, if needed
+   #
    @staticmethod
    def createDummies():
       now = timezone.now()
@@ -128,6 +132,9 @@ class dummyGenerator:
       game.save()
 
    @staticmethod
+   # 
+   # Deletes all dummy objects created by createDummies
+   #
    def deleteDummies():
       #Dummy keys:
       #  Referal: name = "Dummy Referal"
