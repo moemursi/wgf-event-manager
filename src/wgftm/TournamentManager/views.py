@@ -137,7 +137,7 @@ def editProfile(request):
             'username': curUser.username, 'email': curUser.email, 'is_ucsd': Attendee.objects.get(user=curUser).isUcsd,
             'is_player': Attendee.objects.get(user=curUser).isPlayer(), 'is_sixth': Attendee.objects.get(user=curUser).isSixth})
 
-    return render(request, 'tm_editProfile.html', { 'form': form })
+    return render(request, 'tm_editProfile.html', { 'form': form, 'is_player':  Attendee.objects.get(user=curUser).isPlayer()})
 
 def postedit(request):
     return render(request, 'tm_postedit.html')
