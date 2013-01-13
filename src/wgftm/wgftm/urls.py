@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^postregister/$', 'TournamentManager.views.postregister'),
     url(r'^viewuser/$', 'TournamentManager.views.viewuser'),
     url(r'^postlogout/$', 'TournamentManager.views.postlogout'),
+    url(r'^viewtourneys/$', 'TournamentManager.views.viewTourneys'),
+    url(r'^tourneydetail/(\d+)$', 'TournamentManager.views.viewTourneys'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
