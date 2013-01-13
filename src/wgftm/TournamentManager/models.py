@@ -1,5 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
+
+GENDER_CHOICES = (
+                  (u'M', u'Male'),
+                  (u'F', u'Female'),
+                  (u'?', u'Prefer not to answer')
+                  )
 
 # Referal: how people found out about the event
 class Referal(models.Model):
@@ -18,7 +25,7 @@ class Attendee(models.Model):
     user = models.OneToOneField(User)
     isUcsd = models.BooleanField()                        # Is the attendee a UCSD student?
     isSixth = models.BooleanField()                       # Is this attendee from Sixth?
-    gender = models.CharField(max_length=30)              # What is this attendee's gender?
+    gender = models.CharField(max_length=30, choices=GENDER_CHOICES)    # What is this attendee's gender?
     referals = models.ManyToManyField(Referal)            # How did this attendee hear about WGF?
     def __unicode__(self):
         return "User: " + self.user.username + " | Name: " + self.user.first_name + " " + self.user.last_name
@@ -31,7 +38,7 @@ class Guest(Attendee):
 
 # Player: A user who is a player in the Event.
 class Player(Attendee):
-    phoneNumber = models.CharField(max_length=10)          # Optional field
+    phoneNumber = models.CharField(max_length=10, blank=True)          # Optional field
     #isBusy = models.BooleanField()                        # Is the player CURRENTLY busy - may be used for something
     
     def __unicode__(self):
@@ -67,7 +74,7 @@ class Event(models.Model):
 class Checkin(models.Model):
     attendee = models.ForeignKey(Attendee)              # The person who checked in
     event = models.ForeignKey(Event)                    # The event checked into
-    date = models.DateField()                           # The day checked in
+    date = models.DateField(default=datetime.date.today)    # The day checked in
     def __unicode__(self):
         return self.attendee.user.first_name + " " + self.attendee.user.last_name
 
@@ -85,7 +92,7 @@ class Tournament(models.Model):
     isSeededByRank = models.BooleanField()                # Is this tournament seeded according to rank (metadata)?
     bracket = models.CharField(max_length=1024)           # Bracket field - contains a string describing the current state/structure of the tournament
     playersIn = models.ManyToManyField(Player)            # What Players are in the Tournament?
-    chatChannel = models.CharField(max_length=30)                      # What chat channel in-game should players join?
+    chatChannel = models.CharField(max_length=30)         # What chat channel in-game should players join?
     def __unicode__(self):
         return self.event.name + " " + self.name
 
