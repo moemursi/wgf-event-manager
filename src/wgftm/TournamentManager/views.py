@@ -27,7 +27,7 @@ def tm_login(request):
          #Bad login
          logout(request)
          form = LoginForm()
-         return render(request, 'tm_login.html', { 'form' : form, 'status' : 'invalid' })  
+         return render(request, 'tm_login.html', { 'form' : form, 'status' : 'invalid' }) 
    else:
       logout(request)
       form = LoginForm()
@@ -59,7 +59,12 @@ def viewuser(request):
    elif guest is not None:
       usertype = 'guest'
       data = guest
-   return render(request, 'tm_viewuser.html', { 'data' : data , 'user' : curUser, 'usertype' : usertype})
+
+   # Get all the tournaments for which the current user is a player
+   inTourneys = Tournament.objects.filter(playersIn=curUser)
+   # Get all the tournaments for which the current user is not a player
+   notInTourneys = Tournament.objects.exclude(playersIn=curUser)
+   return render(request, 'tm_viewuser.html', { 'data' : data , 'user' : curUser, 'usertype' : usertype, 'inTourneys' : inTourneys, 'notInTourneys' : notInTourneys })
 
 #def view_teams(request):
    
@@ -128,3 +133,27 @@ def register(request):
       form = RegistrationForm()
       
    return render(request, 'tm_register.html', { 'form': form })
+
+@login_required
+def editProfile(request):
+   curUser = request.user
+   if request.method == 'POST':
+      form = EditForm(request.POST)
+      if form.is_valid():
+         curUser.username = form.cleaned_data['username']
+         curUser.first_name = form.cleaned_data['first_name']
+         curUser.last_name = form.cleaned_data['last_name']
+         curUser.set_password(form.cleaned_data['password'])
+         curUser.isUcsd = form.cleaned_data['is_ucsd']
+         curUser.isSixth = form.cleaned_data['is_sixth']
+         curUser.save()
+         return HttpResponseRedirect('/postedit/') # Redirect to thank you page
+   else:
+      form = EditForm(initial={'first_name': curUser.first_name, 'last_name': curUser.last_name, 
+         'username': curUser.username, 'email': curUser.email, 'is_ucsd': Attendee.objects.get(user=curUser).isUcsd,
+         'is_sixth': Attendee.objects.get(user=curUser).isSixth})
+      
+   return render(request, 'tm_editProfile.html', { 'form': form })
+
+def postedit(request):
+   return render(request, 'tm_postedit.html')

@@ -1,7 +1,33 @@
-<h2>Winter Gamefest 2012</h2>
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style>
+		h2.title {
+			font-family: Helvetica;
+			font-weight: bolder;
+			font-size: 40px;
+		}
+	</style>
+</head>
+<h2 class="title">Winter Gamefest 2013</h2>
 <div class="userinfo">{{ user.first_name }} "{{ user.username }}" {{ user.last_name }}</div>
 {% if usertype = 'player' %}
 <div class="userinfo">This player is from UCSD: {{ data.isUcsd }} </div>
 <div class="userinfo">This player is from Sixth: {{ data.isSixth }} </div>
 <div class="userinfo">Age: {{ data.age }} </div>
 {% endif %}
+
+{% if inTourneys %}
+   <h2>Currently registered in:</h2>
+   {% for t in inTourneys %}
+      <a href='/tourneydetail/{{ t.id }}'>{{ t.name }}</a> <br />
+   {% endfor %}
+{% endif %}
+
+{% if notInTourneys %}
+   <h2>Can register in:</h2>
+   {% for t in notInTourneys %}
+      <a href='/tourneydetail/{{ t.id }}'>{{ t.name }}</a> <br />
+   {% endfor %}
+{% endif %} 
+</html>
