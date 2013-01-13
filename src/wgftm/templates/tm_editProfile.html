@@ -18,11 +18,7 @@
    <div class="form_field">{{ form.password.label_tag }}: {{form.password}}</div>
    <div class="form_field">{{ form.email.label_tag }}: {{form.email}}</div>
 
-   <div class="form_field">{{ form.is_player.label_tag }}: {{form.is_player}}
-      <script>
-         document.getElementById({{form.is_player.auto_id}}).disabled=true;
-      </script>
-   </div>
+   <div class="form_field">{{ form.is_player.label_tag }}: {{form.is_player}}</div>
    <div class="form_field">{{ form.is_ucsd.label_tag }}: {{form.is_ucsd}}</div>
    <div class="form_field">{{ form.is_sixth.label_tag }}: {{form.is_sixth}}</div>
    <input type="submit" value="EditProfile" />
