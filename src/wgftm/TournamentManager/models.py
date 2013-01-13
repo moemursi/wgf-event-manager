@@ -16,9 +16,13 @@ class Attendee(models.Model):
    user = models.OneToOneField(User)
    isUcsd = models.BooleanField()                        # Is the player a UCSD student?
    isSixth = models.BooleanField()                       # Is this player from Sixth?
-   gender = models.CharField(max_length=30)                           # What is this attendee's gender?
+   gender = models.CharField(max_length=30)              # What is this attendee's gender?
    referals = models.ManyToManyField(Referal)            # How did this attendee hear about WGF?
-   timeOfLastCheckin = models.TimeField()                # What time did this person last check in?
+
+# Checkins of an attendee at an event
+class Checkin(models.Model):
+    attendee = models.ForeignKey(Attendee)              # The person who checked in
+    event = models.ForeignKey(Event)                    # The event checked into
 
 # Guest: a user who is not a player
 class Guest(Attendee):
@@ -53,7 +57,6 @@ class TournamentAssistant(models.Model):
 # Event: The highest level of the Tournament. 
 class Event(models.Model):                               
    name = models.CharField(max_length=255)               # The name of the tournament.
-   headcount = models.IntegerField()                     # How many people checked-in at this event?
    
 # Tournament: a tournament for a single game.
 class Tournament(models.Model):
@@ -107,9 +110,3 @@ class Game(models.Model):
    gameLosers = models.ManyToManyField(Team, related_name = 'gameLosers', verbose_name = 'teams who lost the game')    # Who were the losers?
    results = models.ManyToManyField(Result)                          # Score results of teams in this game
 
-
-
-
-   
-
-   
