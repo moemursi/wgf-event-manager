@@ -19,11 +19,6 @@ class Attendee(models.Model):
    gender = models.CharField(max_length=30)              # What is this attendee's gender?
    referals = models.ManyToManyField(Referal)            # How did this attendee hear about WGF?
 
-# Checkins of an attendee at an event
-class Checkin(models.Model):
-    attendee = models.ForeignKey(Attendee)              # The person who checked in
-    event = models.ForeignKey(Event)                    # The event checked into
-
 # Guest: a user who is not a player
 class Guest(Attendee):
       
@@ -57,6 +52,11 @@ class TournamentAssistant(models.Model):
 # Event: The highest level of the Tournament. 
 class Event(models.Model):                               
    name = models.CharField(max_length=255)               # The name of the tournament.
+
+# Checkins of an attendee at an event
+class Checkin(models.Model):
+    attendee = models.ForeignKey(Attendee)              # The person who checked in
+    event = models.ForeignKey(Event)                    # The event checked into
    
 # Tournament: a tournament for a single game.
 class Tournament(models.Model):
