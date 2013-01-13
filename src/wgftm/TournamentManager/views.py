@@ -26,7 +26,6 @@ def tm_login(request):
       else:
          #Bad login
          logout(request)
-         form = LoginForm()
          return render(request, 'tm_login.html', { 'form' : form, 'status' : 'invalid' }) 
    else:
       logout(request)
@@ -78,24 +77,9 @@ def tourneyDetail(request, tourney_id):
    except ObjectDoesNotExist:
       errors = ["Tournament with id " + tourney_id + "does not exist!"]
       return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
-   matches = Match.objects.filter(tournament=t)
-   if not matches:
-      errors = ["Tournament selected contains no matches to view."]
-      return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
    
-   # Find root match (i.e.: the final game, has no parent matches)
-   root = None
-   for match in matches:
-      if match.matchWinners is None and match.matchLosers is None:
-         root = match
-         matches = matches.exclude(id=root.id)
-         break
-   
-   if root is None:
-      errors = ["ERROR: Tournament is malformed! Has no final match!"]
-      return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
-   
-   
+   # After this, matches should be sorted into an in-order tier list
+   # Figure out how many rows, how many columns you need
    
 @login_required
 def viewTourneys(request):
