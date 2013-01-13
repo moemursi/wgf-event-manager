@@ -118,7 +118,7 @@ class Team(models.Model):
 class Match(models.Model):
     tournament = models.ForeignKey(Tournament)            # What tournament does this match belong to?
     description = models.CharField(max_length=64)         # What is this match's description? 
-    teams = models.ManyToManyField(Team)                  # What teams are participaiting?
+    teams = models.ManyToManyField(Team, null=True, blank=True)                  # What teams are participaiting?
     winnerParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for winners', null=True, blank=True)   # Where should the winners go?
     loserParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for losers', null=True, blank=True)     # Where should the losers go?
     matchWinners = models.ManyToManyField(Team, related_name = 'matchWinners', verbose_name = 'teams who won the match') # Who are the winners?
