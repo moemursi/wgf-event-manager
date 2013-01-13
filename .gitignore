@@ -1,17 +1,65 @@
-/src/wgftm/mainDatabase.db
-/src/wgftm/wgftm/wsgi.pyc
-/src/wgftm/wgftm/__init__.pyc
-/src/wgftm/wgftm/hostSettings.pyc
-/src/wgftm/wgftm/settings.pyc
-/src/wgftm/TournamentManager/views.pyc
-/src/wgftm/TournamentManager/__init__.pyc
-/src/wgftm/TournamentManager/forms.pyc
-/src/wgftm/TournamentManager/models.pyc
-/src/wgftm/wgftm/urls.pyc
-/src/wgftm/wgftm/wsgi.pyc
-/src/wgftm/wgftm/__init__.pyc
-/src/wgftm/wgftm/hostSettings.pyc
-/src/wgftm/wgftm/settings.pyc
-/src/wgftm/wgftm/hostSettings.py
-/src/wgftm/wgftm/hostSettings.py
-/src/wgftm/mainDatabase.db
+########## Django ##########
+*.log
+*.pot
+*.pyc
+hostSettings.py
+mainDatabase.db
+
+########## Eclipse ##########
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+########## VIM ##########
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+
+########## OS X ##########
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+########## Windows ##########
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
