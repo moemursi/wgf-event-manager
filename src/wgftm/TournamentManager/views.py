@@ -4,8 +4,8 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-from TournamentManager.forms import RegistrationForm, LoginForm
-from TournamentManager.models import Player, Guest
+from TournamentManager.forms import *
+from TournamentManager.models import *
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -66,11 +66,42 @@ def viewuser(request):
 
 #def add_team(request):
    
-
-#def tournament_detail(request):
+def tourneyDetail(request, tourney_id):
+   t = None
+   try:
+      Tournament.objects.get(id=tourney_id)
+   except ObjectDoesNotExist:
+      errors = ["Tournament with id " + tourney_id + "does not exist!"]
+      return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
+   matches = Match.objects.filter(tournament=t)
+   if not matches:
+      errors = ["Tournament selected contains no matches to view."]
+      return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
    
-
-#def view_tournaments(request):
+   # Find root match (i.e.: the final game, has no parent matches)
+   root = None
+   for match in matches:
+      if match.matchWinners is None and match.matchLosers is None:
+         root = match
+         matches = matches.exclude(id=root.id)
+         break
+   
+   if root is None:
+      errors = ["ERROR: Tournament is malformed! Has no final match!"]
+      return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
+   
+   
+   
+@login_required
+def viewTourneys(request):
+   curUser = request.user
+   # Get all the tournaments for which the current user is a player
+   inTourneys = Tournament.objects.filter(playersIn=curUser)
+   # Get all the tournaments for which the current user is not a player
+   notInTourneys = Tournament.objects.exclude(playersIn=curUser)
+   
+   return render( request, 'tm_viewtourneys.html', { 'inTourneys' : inTourneys , 'notInTourneys' : notInTourneys } )
+   
   
 def postregister(request):
    return render(request, 'tm_postregister.html')
