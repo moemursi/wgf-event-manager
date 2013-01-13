@@ -40,13 +40,19 @@ def tm_logout(request):
 @login_required   
 def viewuser(request):
    curUser = request.user
+   player = None
+   guest = None
+
    try:
       player = Player.objects.get(user=curUser) 
-      guest = Guest.objects.get(user=curUser)
    except Player.DoesNotExist:
       player = None
+
+   try:
+      guest = Guest.objects.get(user=curUser)   
    except Guest.DoesNotExist:
       guest = None
+
    if player is not None:
       usertype = 'player'
       data = player
@@ -80,7 +86,7 @@ def register(request):
          formUser.first_name = form.cleaned_data['first_name']
          formUser.last_name = form.cleaned_data['last_name']
          if(form.cleaned_data['is_player']):
-            player = Player(user = formUser, isUcsd = form.cleaned_data['is_ucsd'], age = form.cleaned_data['age'], isBusy = form.cleaned_data['age'], ucsdCollege='ItsASecret', phoneNumber = '1234567890')
+            player = Player(user = formUser, isUcsd = form.cleaned_data['is_ucsd'], age = form.cleaned_data['age'], isBusy = form.cleaned_data['age'], isSixth=form.cleaned_data['is_sixth'], phoneNumber = '1234567890')
             player.save()
          else:
             guest = Guest(user = formUser, isUcsd = form.cleaned_data['is_ucsd'])
