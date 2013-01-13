@@ -7,8 +7,8 @@
    </ul>
 {% endif %}
 
-<h2>Winter Gamefest 2013 User Registration</h2>
-<form method ="post" action="/register/" method="post">
+<h2>Winter Gamefest 2013 Profile Edit</h2>
+<form method ="post" action="/editprofile/">
    {% csrf_token %}
    <div class="form_field">{{ form.first_name.label_tag }}: {{form.first_name}}</div>
    <div class="form_field">{{ form.last_name.label_tag }}: {{form.last_name}}</div>
@@ -18,8 +18,12 @@
    <div class="form_field">{{ form.password.label_tag }}: {{form.password}}</div>
    <div class="form_field">{{ form.email.label_tag }}: {{form.email}}</div>
 
-   <div class="form_field">{{ form.is_player.label_tag }}: {{form.is_player}}</div>
+   <div class="form_field">{{ form.is_player.label_tag }}: {{form.is_player}}
+      <script>
+         document.getElementById({{form.is_player.auto_id}}).disabled=true;
+      </script>
+   </div>
    <div class="form_field">{{ form.is_ucsd.label_tag }}: {{form.is_ucsd}}</div>
    <div class="form_field">{{ form.is_sixth.label_tag }}: {{form.is_sixth}}</div>
-   <input type="submit" value="Register" />
+   <input type="submit" value="EditProfile" />
 </form>
