@@ -27,7 +27,7 @@ class Attendee(models.Model):
     isSixth = models.BooleanField()                       # Is this attendee from Sixth?
     gender = models.CharField(max_length=30, choices=GENDER_CHOICES)    # What is this attendee's gender?
     referals = models.ManyToManyField(Referal)            # How did this attendee hear about WGF?
-    def isPlayer(self):
+    def isPlayer(self):                                   # Is the attendee also a player?
         if Player.objects.filter(user=self.user):
             return True
         else:
