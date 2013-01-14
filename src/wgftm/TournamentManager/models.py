@@ -26,7 +26,7 @@ class Attendee(models.Model):
     isUcsd = models.BooleanField()                        # Is the attendee a UCSD student?
     isSixth = models.BooleanField()                       # Is this attendee from Sixth?
     gender = models.CharField(max_length=30, choices=GENDER_CHOICES)    # What is this attendee's gender?
-    referals = models.ManyToManyField(Referal)            # How did this attendee hear about WGF?
+    referals = models.ManyToManyField(Referal, null=True, blank=True)            # How did this attendee hear about WGF?
     def isPlayer(self):                                   # Is the attendee also a player?
         if Player.objects.filter(user=self.user):
             return True
@@ -88,15 +88,15 @@ class Checkin(models.Model):
 class Tournament(models.Model):
     event = models.ForeignKey(Event)                      # What Event does this Tournament belong to?
     name = models.CharField(max_length=255)               # Tournament name
-    date = models.TimeField()                             # Tournament date
+    date = models.DateTimeField()                         # Tournament date
     curNumTeams = models.IntegerField()                   # What is the current number of teams in this tournament?
     maxNumTeams = models.IntegerField()                   # The maximum number of teams in this tournament?
     maxTeamSize = models.IntegerField()                   # What is the maximum number of players on a team in this tournament?
     tournamentLeaders = models.ManyToManyField(TournamentLeader)         # Who are the TLs?
-    tournamentAssistants = models.ManyToManyField(TournamentAssistant)   # Who are the TAs?
+    tournamentAssistants = models.ManyToManyField(TournamentAssistant, null=True, blank=True)   # Who are the TAs?
     prizes = models.CharField(max_length=500)             # Textfield for prizes
     isSeededByRank = models.BooleanField()                # Is this tournament seeded according to rank (metadata)?
-    bracket = models.CharField(max_length=1024)           # Bracket field - contains a string describing the current state/structure of the tournament
+#    bracket = models.CharField(max_length=1024)           # Bracket field - contains a string describing the current state/structure of the tournament
     playersIn = models.ManyToManyField(Player)            # What Players are in the Tournament?
     chatChannel = models.CharField(max_length=30)         # What chat channel in-game should players join?
     def __unicode__(self):
@@ -110,7 +110,7 @@ class Team(models.Model):
     numOfPlayers = models.IntegerField()                                 # How many players are on this team?
     players = models.ManyToManyField(Player, related_name = 'players')   # What players are on the this team?
     captain = models.ForeignKey(Player, related_name = 'captain')        # Who is the team captain? 
-    metadata = models.IntegerField()                                     # Data for matchmaking - if a matchmaking algorithm is specified, use this to determine rankings
+    metadata = models.IntegerField(null=True, blank=True)                # Data for matchmaking - if a matchmaking algorithm is specified, use this to determine rankings
     def __unicode__(self):
         return self.tournament.__unicode__() + ": " + self.name
 
@@ -121,8 +121,8 @@ class Match(models.Model):
     teams = models.ManyToManyField(Team, null=True, blank=True)                  # What teams are participaiting?
     winnerParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for winners', null=True, blank=True)   # Where should the winners go?
     loserParent = models.OneToOneField('self', related_name = '+', verbose_name = 'match for losers', null=True, blank=True)     # Where should the losers go?
-    matchWinners = models.ManyToManyField(Team, related_name = 'matchWinners', verbose_name = 'teams who won the match') # Who are the winners?
-    matchLosers = models.ManyToManyField(Team, related_name = 'matchLosers', verbose_name = 'teams who lost the match')  # Who are the losers?
+    matchWinners = models.ManyToManyField(Team, related_name = 'matchWinners', verbose_name = 'teams who won the match', null=True, blank=True) # Who are the winners?
+    matchLosers = models.ManyToManyField(Team, related_name = 'matchLosers', verbose_name = 'teams who lost the match', null=True, blank=True)  # Who are the losers?
     def __unicode__(self):
         return self.tournament.__unicode__() + ": " + self.description
 
