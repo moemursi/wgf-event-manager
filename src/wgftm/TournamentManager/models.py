@@ -133,7 +133,7 @@ class Tournament(models.Model):
         while not matches:
             prevLevel = list(curLevel)
             curLevel = []
-            for match in prevLevel
+            for match in prevLevel:
                 winnerMatches = Match.objects.filter(matchWinners=match)
                 loserMatches = Match.objects.filter(matchLosers=match)
                 curLevel.append( winnerMatches )
