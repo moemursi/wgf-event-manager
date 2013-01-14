@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from TournamentManager.forms import *
 from TournamentManager.models import *
+from TournamentManager.exceptions import NoMatchesInTourney, TourneyMalformed
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -73,12 +74,25 @@ def viewuser(request):
 def tourneyDetail(request, tourney_id):
     t = None
     try:
-        Tournament.objects.get(id=tourney_id)
+        t = Tournament.objects.get(id=tourney_id)
+        tiers = t.getMatchTiers()
     except ObjectDoesNotExist:
         errors = ["Tournament with id " + tourney_id + "does not exist!"]
         return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
-    
+    except NoMatchesInTourney:
+        errors = ["Tournament selected contains no matches to view."]
+        return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
+    except TourneyMalformed:
+        errors = ["ERROR: Tournament is malformed! Has no final match!"]
+        return render( request, 'tm_tourneydetail.html', { 'errors' : errors } )
     # After this, matches should be sorted into an in-order tier list
+    # Need to find the tier with the largest number of matches to determine table size
+    largestMatches = 0
+    for tier in tiers:
+        if tier.count() > largestMatches:
+            largestMatches = tier.count()
+        
+    return render( request, 'tm_tourneydetail.html', {'tiers' : tiers, 'largestMatches' : largestMatches})
     # Figure out how many rows, how many columns you need
     
 @login_required
