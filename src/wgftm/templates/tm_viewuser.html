@@ -14,7 +14,7 @@
 {% if usertype = 'player' %}
 <div class="userinfo">This player is from UCSD: {{ data.isUcsd }} </div>
 <div class="userinfo">This player is from Sixth: {{ data.isSixth }} </div>
-<div class="userinfo">Age: {{ data.age }} </div>
+<input type="button" onClick="parent.location='../editprofile'" value="Edit Profile" />
 {% endif %}
 
 {% if inTourneys %}

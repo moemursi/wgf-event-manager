@@ -38,7 +38,7 @@ class CheckinAdmin(admin.ModelAdmin):
 admin.site.register(Checkin, CheckinAdmin)
 
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ('event', 'name', 'date', 'curNumTeams', 'maxTeamSize', 'prizes', 'isSeededByRank', 'bracket', 'chatChannel')
+    list_display = ('event', 'name', 'date', 'curNumTeams', 'maxTeamSize', 'prizes', 'isSeededByRank', 'chatChannel')
 admin.site.register(Tournament, TournamentAdmin)
 
 class TeamAdmin(admin.ModelAdmin):
