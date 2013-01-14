@@ -27,3 +27,5 @@
 #                 point to this location with an ABSOLUTE path.
 
 #CUSTOM_TEMPLATES_DIR = 'D:/Dropbox/UCSD/Sixth College Technology Committee/Code/wgf-event-manager/src/wgftm/templates'
+
+CUSTOM_TEMPLATES_DIR = '/Users/qayshp/Documents/Aptana\ Studio\ 3\ Workspace/wgf-event-manager/src/wgftm/templates'
