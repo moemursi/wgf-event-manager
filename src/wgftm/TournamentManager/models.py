@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from TournamentManager.exceptions import NoMatchesInTourney, TourneyMalformed
 
 GENDER_CHOICES = (
                   (u'M', u'Male'),
@@ -101,6 +102,47 @@ class Tournament(models.Model):
     chatChannel = models.CharField(max_length=30)         # What chat channel in-game should players join?
     def __unicode__(self):
         return self.event.name + " " + self.name
+        
+    #
+    # getMatchTiers - returns a in-order list of match tiers - 
+    #                 i.e.: [finals, semifinals, quarterfinals... pool play/first level of the bracket]
+    #                 which can be interated over in a template to display the tournament structure
+    # raises: NoMatchesInTourneyError, TourneyMalformedError
+    def getMatchTiers():
+        matches = Match.objects.filter(tournament=t)
+        if not matches:
+            raise NoMatchesInTourney()
+      
+        # Find root match (i.e.: the final game, has no parent matches)
+        root = None
+        for match in matches:
+            if match.matchWinners is None and match.matchLosers is None:
+                root = match
+                matches = matches.exclude(id=root.id)
+                break
+      
+        if root is None:
+            raise TourneyMalformed()
+        tiers = []
+        curLevel = []
+        level.append(root)
+        # Append a copy of the current level to tiers.
+        tiers.append(list(curLevel))
+        prevLevel = list(curLevel)
+        # While we haven't placed every match into a tier
+        while not matches:
+            prevLevel = list(curLevel)
+            curLevel = []
+            for match in prevLevel
+                winnerMatches = Match.objects.filter(matchWinners=match)
+                loserMatches = Match.objects.filter(matchLosers=match)
+                curLevel.append( winnerMatches )
+                curLevel.append( loserMatches )
+                matches = matches.exclude(matchWinners=match)
+                matches = matches.exclude(matchLosers=match)
+            tiers.append( list(curLevel) )
+        return tiers
+
 
 # Team: Can be a single player or a collection of players, but ONLY teams are part of Games. The participants
 # in a game
